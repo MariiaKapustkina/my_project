@@ -20,10 +20,10 @@ The app includes multiple pages, dark/light theme support, and a custom animated
    ```bash
    git clone https://github.com/MariiaKapustkina/my_project.git
 
-   Navigate into the project:
+2. Navigate into the project:
    `cd my_project`
    
-   Use `npm install` to install dependencies.
+3. Use `npm install` to install dependencies.
 
-   Run locally:
+4. Run locally:
    `npm run dev`
