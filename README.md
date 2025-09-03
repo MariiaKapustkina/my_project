@@ -1,12 +1,29 @@
-# React + Vite
+# 🌞 Horoscope App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple React application for horoscopes, built with **React + Vite + Tailwind CSS**.  
+The app includes multiple pages, dark/light theme support, and a custom animated loader.  
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Tech Stack
+- ⚛️ React
+- 🎨 Tailwind CSS
+- 🛠️ Vite
+- 🌙 Context API (theme switching)
+- 🔮 React Router
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ⚙️ Getting Started
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/MariiaKapustkina/my_project.git
+
+   Navigate into the project:
+   `cd my_project`
+   
+   Use `npm install` to install dependencies.
+
+   Run locally:
+   `npm run dev`
