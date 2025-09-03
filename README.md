@@ -1,7 +1,8 @@
 # 🌞 Horoscope App
 
 A simple React application for horoscopes, built with **React + Vite + Tailwind CSS**.  
-The app includes multiple pages, dark/light theme support, and a custom animated loader.  
+The app includes multiple pages, dark/light theme support, and a custom animated loader. 
+[DEMO](https://horoscope-astralis.vercel.app/)
 
 ---
 
@@ -12,7 +13,6 @@ The app includes multiple pages, dark/light theme support, and a custom animated
 - 🌙 Context API (theme switching)
 - 🔮 React Router
 
-[DEMO](https://horoscope-astralis.vercel.app/)
 ---
 
 ## ⚙️ Getting Started
