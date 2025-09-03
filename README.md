@@ -12,6 +12,7 @@ The app includes multiple pages, dark/light theme support, and a custom animated
 - 🌙 Context API (theme switching)
 - 🔮 React Router
 
+[DEMO](https://horoscope-astralis.vercel.app/)
 ---
 
 ## ⚙️ Getting Started
