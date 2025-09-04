@@ -22,8 +22,8 @@ export const saveSubscriber = async ({ firstName, lastName, email }) => {
       email,
       createdAt: new Date(),
     });
-    console.log('✅ Subscriber saved:', firstName, lastName, email);
+    console.log('Subscriber saved:', firstName, lastName, email);
   } catch (error) {
-    console.error('❌ Saving error:', error);
+    console.error('Saving error:', error);
   }
 };

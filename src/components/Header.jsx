@@ -36,7 +36,7 @@ export default function Header() {
         </NavLink>
 
         <nav className="hidden md:flex text-xl gap-6 items-center">
-          {['home', 'horoscopes', 'help', 'sign'].map((link) => (
+          {['home', 'horoscopes', 'help', 'subscribe'].map((link) => (
             <NavLink key={link} to={`/${link}`} className={getLinkClass}>
               {link.toUpperCase()}
             </NavLink>
@@ -117,7 +117,7 @@ export default function Header() {
               : 'bg-white/95 text-black backdrop-blur-sm'
           }`}
         >
-          {['home', 'horoscopes', 'help', 'sign'].map((link) => (
+          {['home', 'horoscopes', 'help', 'subscribe'].map((link) => (
             <NavLink
               key={link}
               to={`/${link}`}

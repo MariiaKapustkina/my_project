@@ -28,7 +28,7 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/horoscopes" element={<Horoscopes />} />
         <Route path="/help" element={<Help />} />
-        <Route path="/sign" element={<JoinUpdates />} />
+        <Route path="/subscribe" element={<JoinUpdates />} />
       </Routes>
       <Footer/>
     </>
