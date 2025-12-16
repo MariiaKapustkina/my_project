@@ -11,7 +11,7 @@ export default function NatureQuiz({ step, quiz, handleAnswer, isSpinning }) {
       <div className="text-2xl space-y-3">
         {quiz[step].options.map((element, i) => (
           <button
-            key={i}
+            key={`${step}-${i}`}
             onClick={() => handleAnswer(element.zodiac)}
             className="block w-full text-left bg-purple-700/30 hover:bg-purple-500 transition px-4 py-2 rounded"
           >
@@ -22,3 +22,4 @@ export default function NatureQuiz({ step, quiz, handleAnswer, isSpinning }) {
     </div>
   );
 }
+

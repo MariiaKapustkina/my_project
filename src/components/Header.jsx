@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import logo from '../assets/icon/logo2.png';
+import logo from '../assets/icon/logo.png';
 import { ThemeContext } from '../context/ThemeContext';
 import { FiSun, FiMoon } from 'react-icons/fi';
 

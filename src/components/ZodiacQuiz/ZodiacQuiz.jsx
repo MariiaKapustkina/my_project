@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import { ThemeContext } from '../../context/ThemeContext';
-import { useZodiacQuiz } from './useZodiacQuiz';
 import DateQuiz from './DateQuiz';
 import NatureQuiz from './NatureQuiz';
 import ResultCard from './ResultCard';
+import { useZodiacQuiz } from '../../hooks/useZodiacQuiz';
 
 export default function ZodiacQuiz() {
   const { theme } = useContext(ThemeContext);
@@ -33,7 +33,7 @@ export default function ZodiacQuiz() {
   `;
 
   const buttonClasses = (active) =>
-    `px-4 py-2 text-lg rounded transition-colors duration-200 ${
+    `px-6 py-4 text-lg rounded transition-colors duration-200 ${
       active
         ? theme === 'dark'
           ? 'bg-yellow-600 text-black'
@@ -44,8 +44,8 @@ export default function ZodiacQuiz() {
     }`;
 
   return (
-    <div className={containerClasses}>
-      <div className="flex flex-col lg:flex-row justify-center gap-6 mb-6">
+    <div className={`${containerClasses} min-h-[400px] flex flex-col`}>
+      <div className="flex justify-center gap-6 mb-6">
         <button
           onClick={() => handleModeChange('date')}
           className={buttonClasses(mode === 'date')}
@@ -60,27 +60,29 @@ export default function ZodiacQuiz() {
         </button>
       </div>
 
-      {mode === 'date' && !dateZodiac && (
-        <DateQuiz
-          birthdate={birthdate}
-          setBirthdate={setBirthdate}
-          handleSubmit={handleSubmit}
-          isSpinning={isSpinning}
-        />
-      )}
+      <div className="flex-grow flex items-center justify-center">
+        {mode === 'date' && !dateZodiac && (
+          <DateQuiz
+            birthdate={birthdate}
+            setBirthdate={setBirthdate}
+            handleSubmit={handleSubmit}
+            isSpinning={isSpinning}
+          />
+        )}
 
-      {mode === 'date' && dateZodiac && <ResultCard sign={dateZodiac} />}
+        {mode === 'date' && dateZodiac && <ResultCard sign={dateZodiac} />}
 
-      {mode === 'quiz' && !quizZodiac && (
-        <NatureQuiz
-          step={step}
-          quiz={quiz}
-          handleAnswer={handleAnswer}
-          isSpinning={isSpinning}
-        />
-      )}
+        {mode === 'quiz' && !quizZodiac && (
+          <NatureQuiz
+            step={step}
+            quiz={quiz}
+            handleAnswer={handleAnswer}
+            isSpinning={isSpinning}
+          />
+        )}
 
-      {mode === 'quiz' && quizZodiac && <ResultCard sign={quizZodiac} />}
+        {mode === 'quiz' && quizZodiac && <ResultCard sign={quizZodiac} />}
+      </div>
     </div>
   );
 }

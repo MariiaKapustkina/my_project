@@ -9,6 +9,7 @@ import Lottie from 'lottie-react';
 import { motion } from 'framer-motion';
 import donate from '../assets/donate.json';
 import { ThemeContext } from '../context/ThemeContext';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function JoinUpdates() {
   const { theme } = useContext(ThemeContext);
@@ -17,9 +18,12 @@ export default function JoinUpdates() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [success, setSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    if (localStorage.getItem("subscribed") === "true") setSuccess(true);
+    if (localStorage.getItem('subscribed') === 'true') setSuccess(true);
   }, []);
 
   const sendEmail = async (email, firstName) => {
@@ -32,28 +36,43 @@ export default function JoinUpdates() {
       );
     } catch (err) {
       console.error('EmailJS error:', err);
+      throw err;
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!firstName || !lastName || !email) return;
+    if (!email) return;
+
+    setIsSubmitting(true);
+    setError('');
 
     try {
-      await saveSubscriber({ firstName, lastName, email });
-      await sendEmail(email, firstName);
+      const res = await fetch('https://example.com/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, firstName, lastName }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
       setSuccess(true);
-      localStorage.setItem("subscribed", "true");
-      setFirstName('');
-      setLastName('');
-      setEmail('');
-    } catch (error) {
-      console.error('Subscription error:', error);
-      alert('Something went wrong. Please try again.');
+      localStorage.setItem('subscribed', 'true');
+    } catch (err) {
+      console.error('Registration error:', err);
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleGoogleSignIn = async () => {
+    if (isGoogleLoading) return;
+    setIsGoogleLoading(true);
+    setError('');
+
     const auth = getAuth();
     const provider = new GoogleAuthProvider();
 
@@ -63,17 +82,22 @@ export default function JoinUpdates() {
       await saveSubscriber({ firstName: user.displayName, email: user.email });
       await sendEmail(user.email, user.displayName || 'User');
       setSuccess(true);
-      localStorage.setItem("subscribed", "true");
+      localStorage.setItem('subscribed', 'true');
     } catch (error) {
       console.error('Google sign-in error:', error);
-      alert('Sign-in failed');
+      setError('Sign-in failed. Please try again.');
+    } finally {
+      setIsGoogleLoading(false);
     }
   };
 
   const bgOverlay = theme === 'dark' ? 'bg-black/60' : 'bg-white/30 backdrop-blur-sm';
   const formBg = theme === 'dark' ? 'bg-white/20' : 'bg-yellow-50/70';
   const textColor = theme === 'dark' ? 'text-white' : 'text-black';
-  const buttonBg = theme === 'dark' ? 'bg-yellow-400 text-black hover:bg-yellow-500' : 'bg-black text-white hover:bg-yellow-700';
+  const buttonBg =
+    theme === 'dark'
+      ? 'bg-yellow-400 text-black hover:bg-yellow-500'
+      : 'bg-black text-white hover:bg-yellow-700';
 
   return (
     <section
@@ -111,7 +135,9 @@ export default function JoinUpdates() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
-          className={`order-1 md:order-2 w-full max-w-md mt-6 rounded-2xl shadow-2xl border border-white/40 p-8 backdrop-blur-lg ${theme === 'dark' ? 'bg-white/20' : 'bg-yellow-50/50'}`}
+          className={`order-1 md:order-2 w-full max-w-md mt-6 rounded-2xl shadow-2xl border border-white/40 p-8 backdrop-blur-lg ${
+            theme === 'dark' ? 'bg-white/20' : 'bg-yellow-50/50'
+          }`}
         >
           <h1 className={`text-3xl font-bold text-center mb-2 ${textColor}`}>
             Subscribe for Updates 🚀
@@ -131,8 +157,10 @@ export default function JoinUpdates() {
                   onChange={(e) => setFirstName(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
                   required
+                  disabled={isSubmitting || isGoogleLoading}
                 />
               </div>
+
               <div className="relative w-full">
                 <AiOutlineUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600" />
                 <input
@@ -142,8 +170,10 @@ export default function JoinUpdates() {
                   onChange={(e) => setLastName(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
                   required
+                  disabled={isSubmitting || isGoogleLoading}
                 />
               </div>
+
               <div className="relative w-full">
                 <AiOutlineMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600" />
                 <input
@@ -153,24 +183,51 @@ export default function JoinUpdates() {
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
                   required
+                  disabled={isSubmitting || isGoogleLoading}
                 />
               </div>
 
               <button
                 type="submit"
-                className={`w-full py-3 font-semibold rounded-lg transition duration-200 ${buttonBg}`}
+                disabled={isSubmitting || isGoogleLoading}
+                className={`w-full py-3 font-semibold rounded-lg transition duration-200 ${buttonBg} ${
+                  isSubmitting ? 'opacity-60 cursor-not-allowed' : ''
+                } flex justify-center items-center gap-2`}
               >
-                Subscribe Now
+                {isSubmitting ? (
+                  <>
+                    <CircularProgress size={20} color="inherit" />
+                    Subscribing...
+                  </>
+                ) : (
+                  'Subscribe Now'
+                )}
               </button>
+
               <p className={`font-semibold text-center ${textColor}`}>Or continue with</p>
+
               <button
                 type="button"
                 onClick={handleGoogleSignIn}
-                className="w-full py-3 bg-white border border-gray-300 flex items-center justify-center gap-2 font-semibold rounded-lg hover:bg-gray-100 transition mt-2"
+                disabled={isGoogleLoading || isSubmitting}
+                className={`w-full py-3 bg-white border border-gray-300 flex items-center justify-center gap-2 font-semibold rounded-lg hover:bg-gray-100 transition mt-2 ${
+                  isGoogleLoading ? 'opacity-60 cursor-not-allowed' : ''
+                }`}
               >
                 <FcGoogle size={24} />
-                Subscribe with Google
+                {isGoogleLoading ? (
+                  <>
+                    <CircularProgress size={20} />
+                    Processing...
+                  </>
+                ) : (
+                  'Subscribe with Google'
+                )}
               </button>
+
+              {error && (
+                <p className="text-center text-red-500 font-medium mt-2">{error}</p>
+              )}
             </form>
           ) : (
             <div className="text-center mt-6 p-6 rounded-xl shadow-xl bg-white/90">

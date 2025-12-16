@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { getZodiacSign } from "../../utils/getZodiacSign";
-import { quiz } from "../../utils/quizData";
+import { getZodiacSign } from "../utils/getZodiacSign";
+import { quiz } from "../utils/quizData";
 
 export function useZodiacQuiz() {
   const [mode, setMode] = useState("date");

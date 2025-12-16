@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import logo from "../assets/icon/logo2.png";
+import logo from "../assets/icon/logo.png";
 import { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { FaGithub, FaInstagram, FaTelegram } from "react-icons/fa";
